@@ -1,5 +1,6 @@
 import PySimpleGUI as sg
-from PySimpleGUI.PySimpleGUI import Window
+import math
+from PySimpleGUI.PySimpleGUI import WINDOW_CLOSED, Window
 
 
 def suma():
@@ -9,7 +10,7 @@ def suma():
 			[sg.Text("Segundo numero: ")],
 			[sg.Input(key='-INPUT2-')],	
 			[sg.T(key='Resultado')],
-			[sg.Button('Ok'), sg.Button('Salir')]
+			[sg.Button('Aceptar'), sg.Button('Salir')]
 		]
 
 	window = sg.Window('Suma', layout, modal=True)
@@ -35,12 +36,12 @@ def areaRectangulo():
 			[sg.T("Base del rectangulo: ")], [sg.I(key='Base')],
 			[sg.T("Altura del rectangulo: ")], [sg.I(key='Altura')],
 			[sg.T(key='Resultado')],
-			[sg.B('OK'), sg.B('X')]
+			[sg.B('Aceptar'), sg.B('Salir')]
 		]
 	window = sg.Window('Area Rectangulo', layout, modal=True)
 	while True:
 		event, values = window.read()
-		if event == sg.WINDOW_CLOSED or event == 'X':
+		if event == sg.WINDOW_CLOSED or event == 'Salir':
 			break
 
 		a = int(values['Altura'])
@@ -54,12 +55,12 @@ def areaRectangulo():
 def multiplicacion():
 	layout = [
 				[sg.T("Multiplicacion de numeros: ")],[sg.Input(key="Numeros")],
-				[sg.B('OK'), sg.B(' X ')]
+				[sg.B('Aceptar'), sg.B('Salir')]
 			]
 	window = sg.Window("Multiplicacion", layout, modal=True)
 	while True:
 		event, values = window.read()
-		if event == sg.WINDOW_CLOSED or event == ' X ':
+		if event == sg.WINDOW_CLOSED or event == 'Salir':
 			break
 		Sep = values['Numeros'].split('*')
 		clean = [num.strip(' ') for num in Sep]
@@ -100,3 +101,70 @@ def ComparacionNumero():
 		else:
 			window['resultado'].update('Los números son iguales')
 	window.close()
+
+def Division():
+	layout = [
+		[sg.Text('Teclee el dividendo')],
+		[sg.Input(key='-Input2-')],
+		[sg.Text('Teclee el divisor')],
+		[sg.Input(key='-Input1-')],
+		[sg.Text(key='resultado')],
+		[sg.Button('aceptar'), sg.Button('Salir')],
+	]
+
+	window = sg.Window('División', layout, modal = True)
+	while True:
+		event, values = window.read()
+		if event == sg.WINDOW_CLOSED or event == 'Salir':
+			break
+		a=float(values['-Input1-'])
+		b=float(values['-Input2-'])
+		if (a <= 0) or (b <= 0):
+			window['resultado'].update('Error: los números deben ser positivos')
+		else:
+			window['resultado'].update('El resultado es {}'.format(dividir(a,b)))
+	window.close()
+
+def dividir(divisor, dividendo):
+	return (dividendo/divisor)
+
+def PorcentajeReglaTres():
+	layout = [
+		[sg.Text('Teclee el total')],
+		[sg.Input(key='total')],
+		[sg.Text('Teclee la cantidad a calcular')],
+		[sg.Input(key='cantidad')],
+		[sg.Text(key='resultado')],
+		[sg.Button('Aceptar'), sg.Button('Salir')],
+	]
+	window = sg.Window('Porcentaje en regla de tres', layout, modal = True)
+	while True:
+		event, values = window.read()
+		if event == WINDOW_CLOSED or event == 'Salir':
+			break
+		total = float(values['total'])
+		cantidad = float(values['cantidad'])
+		porcentaje = float(total/100)*cantidad
+		window['resultado'].update('El porcentaje correspondiente es {}'.format(porcentaje))
+	window.close()
+
+def HipotenusaPitagoras():
+	layout = [
+		[sg.Text('Teclee la longitud del cateto opuesto')],
+		[sg.Input(key='CatetoOpuesto')],
+		[sg.Text('Teclee la longitud del cateto adyacente')],
+		[sg.Input(key='CatetoAdyacente')],
+		[sg.Text(key='resultado')],
+		[sg.Button('Aceptar'), sg.Button('Salir')],
+	]
+	window = sg.Window('Hipotenusa en teorema de pitagoras', layout, modal=True)
+	while True:
+		event, values = window.read()
+		if event == WINDOW_CLOSED or event == 'Salir':
+			break
+		CatetoOpuesto = float(values['CateoOpuesto'])
+		CatetoAdyacente = float(values['CatetoAdyacente'])
+		hipotenusa = math.sqrt((CatetoOpuesto**2)+(CatetoAdyacente**2))
+		window['resultado'].update('La hipotenusa resultante es {}'.format(hipotenusa))
+	window.close()
+

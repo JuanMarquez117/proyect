@@ -6,8 +6,9 @@ def opciones(evento):
 	elif evento == 'Area Rectangulo': areaRectangulo()
 	elif evento == 'Multiplicacion': multiplicacion()
 	elif evento == 'Comparacion Numeros': ComparacionNumero()
+	elif evento == 'Division': Division()
+	elif evento == 'Porcentaje': PorcentajeReglaTres()
 	else: return "NA"
-
 
 #Menu 1
 materias = [
@@ -15,6 +16,8 @@ materias = [
 	[sg.HSeparator()],
 	[sg.Button('Suma'), sg.Button('Comparacion Numeros'), sg.Button('Area Rectangulo'), sg.Button('Multiplicacion'),
 	sg.Button('Division'), sg.Button('Porcentaje'), sg.Button('Teorema de pitagoras'), sg.Button('Area Trapecio'), sg.Button('Factorizacion')]
+#	[sg.VSeparator()],
+#	[sg.Button('Hipotenusa'), sg.Button('Catetos')],
 ]
 window = sg.Window('SmartBee', materias)
 
@@ -24,7 +27,6 @@ while True:
 		break
 
 	opciones(event)
-
 	# if event == 'Suma':
 	# 	suma()
 
