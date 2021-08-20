@@ -1,4 +1,6 @@
+from tkinter import Event
 import PySimpleGUI as sg
+from PySimpleGUI.PySimpleGUI import Window
 
 
 def suma():
@@ -74,3 +76,28 @@ def multiplicacion():
 # 	for i in range(0, len(n)):
 # 		total *= n[i]
 # 	print total
+
+def ComparacionNumero():
+	layout = [
+		[sg.Text('Teclee el primer número')],
+		[sg.Input(key='_INPUT1_')],
+		[sg.Text('Teclee el segundo numero')],
+		[sg.Input(key='_INPUT2_')],
+		[sg.Text('resultado')]
+		[sg.Button('Aceptar'), sg.Button('Salir')]
+	]
+
+	window = sg.Window('Conparacion de números', layout, modal = True)
+	while True:
+		event, values = Window.read()
+		if event == sg.WINDOW_CLOSED or event == 'Salir':
+			break
+		a=int(values['-INPUT1-'])
+		b=int(values['-INPUT2-'])
+		if (a<b):
+			window['resultado'].update("El número {0} es menor que {1}".format(values['-INPUT1-'], values['-INPUT2-']))
+		elif(a>b):
+			window['resultado'].update('El numero {0} es mayor que {1}'.format(values['_INPUT1_'], values['_INPUT2_']))
+		else:
+			window['resultado'].update('Los números son iguales')
+	Window.close()

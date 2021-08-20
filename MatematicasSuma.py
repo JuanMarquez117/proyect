@@ -5,17 +5,18 @@ def opciones(evento):
 	if evento == 'Suma': suma()
 	elif evento == 'Area Rectangulo': areaRectangulo()
 	elif evento == 'Multiplicacion': multiplicacion()
+	elif evento == 'Comparacion Numeros': ComparacionNumero()
 	else: return "NA"
 
 
 #Menu 1
 materias = [
-				[sg.Button('Matematicas'), sg.Button('Español'), sg.Button('Fisica'), sg.Button('Algebra'), sg.Button('Calculo'), sg.Button('Programacion')],
-				[sg.HSeparator()],
-				[sg.Button('Suma'), sg.Button('Comparacion Numeros'), sg.Button('Area Rectangulo'), sg.Button('Multiplicacion'),
-				 sg.Button('Division'), sg.Button('Porcentaje'), sg.Button('Teorema de pitagoras'), sg.Button('Area Trapecio'), sg.Button('Factorizacion')]
-			]
-window = sg.Window('SmartVee', materias)
+	[sg.Button('Matematicas'), sg.Button('Español'), sg.Button('Fisica'), sg.Button('Algebra'), sg.Button('Calculo'), sg.Button('Programacion')],
+	[sg.HSeparator()],
+	[sg.Button('Suma'), sg.Button('Comparacion Numeros'), sg.Button('Area Rectangulo'), sg.Button('Multiplicacion'),
+	sg.Button('Division'), sg.Button('Porcentaje'), sg.Button('Teorema de pitagoras'), sg.Button('Area Trapecio'), sg.Button('Factorizacion')]
+]
+window = sg.Window('SmartBee', materias)
 
 while True: 
 	event, values = window.read()
