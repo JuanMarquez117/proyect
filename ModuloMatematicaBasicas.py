@@ -2,9 +2,15 @@ import PySimpleGUI as sg
 import math
 from PySimpleGUI.PySimpleGUI import WINDOW_CLOSED, Window
 
+def collapse(layout, key):
+	return sg.pin(sg.Column(layout, key=key))
 
 def suma():
-	layout = [
+
+	SYMBOL_UP =    '▲'
+	SYMBOL_DOWN =  '▼'
+
+	datos = [
 			[sg.Text("Primer numero: ")],
 			[sg.Input(key='-INPUT1-')],
 			[sg.Text("Segundo numero: ")],
@@ -12,8 +18,19 @@ def suma():
 			[sg.T(key='Resultado')],
 			[sg.Button('Aceptar'), sg.Button('Salir')]
 		]
+	process = [
+				[sg.Multiline(size=(65,20), key='', autoscroll="True", disabled="True")]
+			]
+
+
+	layout = [datos,
+			[sg.T(SYMBOL_DOWN, enable_events=True, key="-open_process-", text_color="yellow"), sg.T("Procedimiento", key="-open_process_label", enable_events=True, text_color="yellow")],
+			[collapse(process, '-Process-')]
+			]
 
 	window = sg.Window('Suma', layout, modal=True)
+
+	opened1 = True
 
 	while True:
 		event, values = window.read()
@@ -22,8 +39,14 @@ def suma():
 
 		a=int(values['-INPUT1-'])
 		b=int(values['-INPUT2-'])
-
 		window['Resultado'].update("La suma de {0} + {1} es {2}".format(values['-INPUT1-'], values['-INPUT2-'], sumar(a, b)))
+
+		if event.startswith('-open_process-'):
+			opened1 = not opened1
+			window['-open_process-'].update(SYMBOL_DOWN if opened1 else SYMBOL_UP)
+			window['-Process-'].update(visible=opened1)
+			
+
 	window.close()
 
 def sumar(a, b):
