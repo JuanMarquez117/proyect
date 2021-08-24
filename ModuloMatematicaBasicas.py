@@ -1,14 +1,15 @@
 import PySimpleGUI as sg
 import math
-from PySimpleGUI.PySimpleGUI import WINDOW_CLOSED, Window
+# from PySimpleGUI.PySimpleGUI import WINDOW_CLOSED, Window
 
 def collapse(layout, key):
-	return sg.pin(sg.Column(layout, key=key))
+	return sg.pin(sg.Column(layout, key=key, visible=False))
+
 
 def suma():
 
-	SYMBOL_UP =    '▲'
-	SYMBOL_DOWN =  '▼'
+	SYMBOL_UP =    '▲ Procedimiento'
+	SYMBOL_DOWN =  '▼ Procedimiento'
 
 	datos = [
 			[sg.Text("Primer numero: ")],
@@ -19,27 +20,45 @@ def suma():
 			[sg.Button('Aceptar'), sg.Button('Salir')]
 		]
 	process = [
-				[sg.Multiline(size=(65,20), key='', autoscroll="True", disabled="True")]
+				[sg.Multiline(size=(40,15), key='-ml-', autoscroll=True, disabled=False)]
 			]
-
-
-	layout = [datos,
-			[sg.T(SYMBOL_DOWN, enable_events=True, key="-open_process-", text_color="yellow"), sg.T("Procedimiento", key="-open_process_label", enable_events=True, text_color="yellow")],
-			[collapse(process, '-Process-')]
+	layout = [	datos,
+				[sg.B(SYMBOL_DOWN,  key="-open_process-")],
+				[collapse(process, '-Process-')]
 			]
 
 	window = sg.Window('Suma', layout, modal=True)
 
-	opened1 = True
+	opened1 = False
 
 	while True:
 		event, values = window.read()
 		if event == sg.WINDOW_CLOSED or event == 'Salir':
 			break
+		if event == 'Aceptar':
+			if values['-INPUT1-'].isnumeric() and values['-INPUT2-'].isnumeric():
+				a=int(values['-INPUT1-'])
+				b=int(values['-INPUT2-'])
+				window['Resultado'].update("La suma de {0} + {1} es {2}".format(values['-INPUT1-'], values['-INPUT2-'], sumar(a, b)))
 
-		a=int(values['-INPUT1-'])
-		b=int(values['-INPUT2-'])
-		window['Resultado'].update("La suma de {0} + {1} es {2}".format(values['-INPUT1-'], values['-INPUT2-'], sumar(a, b)))
+				window['-ml-'].update("La suma de {0} + {1} es\n {2} y □ ⸦══⸧ ".format(values['-INPUT1-'], values['-INPUT2-'], sumar(a, b)))
+				print ('❒')
+				# https://www.symbolsofit.com/en/punctuation/
+				⊡ = 1 ⸦⸬⸬⸬⸧ = 10 
+
+					N= 123
+
+					⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧	⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧	⊡⊡⊡
+					⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧
+					⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧
+					⸦⸬⸬⸬⸧
+					     100	            20           3
+
+
+					N= 1220
+
+			else:
+				window['Resultado'].update("Debes de escribir dos numeros para sumar!")							
 
 		if event.startswith('-open_process-'):
 			opened1 = not opened1
