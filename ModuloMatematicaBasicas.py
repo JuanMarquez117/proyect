@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
+from PIL import Image, ImageTk
 import math
-# from PySimpleGUI.PySimpleGUI import WINDOW_CLOSED, Window
 
 def collapse(layout, key):
 	return sg.pin(sg.Column(layout, key=key, visible=False))
@@ -20,14 +20,25 @@ def suma():
 			[sg.Button('Aceptar'), sg.Button('Salir')]
 		]
 	process = [
-				[sg.Multiline(size=(40,15), key='-ml-', autoscroll=True, disabled=False)]
+				# [sg.Multiline(size=(80,15), key='-ml-', autoscroll=True, disabled=False)]
+	    		[sg.Canvas(size=(300, 300), background_color='#afeeee', key='-canvas-')]
 			]
 	layout = [	datos,
 				[sg.B(SYMBOL_DOWN,  key="-open_process-")],
 				[collapse(process, '-Process-')]
 			]
 
-	window = sg.Window('Suma', layout, modal=True)
+	window = sg.Window('Suma', layout, modal=True, finalize=True)
+
+	canvas = window['-canvas-']
+	cir = canvas.TKCanvas.create_oval(50, 50, 100, 100) 
+	tex = canvas.TKCanvas.create_text(100, 10, fill="darkblue", font="Times 20 italic bold", text="Bla bla bla")  
+    
+	coin = Image.open("coin.png")
+	resizCoin = coin.resize((40, 40))
+	imgCoin = ImageTk.PhotoImage(resizCoin)
+	img = canvas.TKCanvas.create_image(20, 20, image=imgCoin, anchor='center')
+	# cir = window['-canvas-'].TKCanvas.create_oval(50, 50, 100, 100)
 
 	opened1 = False
 
@@ -40,23 +51,22 @@ def suma():
 				a=int(values['-INPUT1-'])
 				b=int(values['-INPUT2-'])
 				window['Resultado'].update("La suma de {0} + {1} es {2}".format(values['-INPUT1-'], values['-INPUT2-'], sumar(a, b)))
-
-				window['-ml-'].update("La suma de {0} + {1} es\n {2} y □ ⸦══⸧ ".format(values['-INPUT1-'], values['-INPUT2-'], sumar(a, b)))
-				print ('❒')
-				# https://www.symbolsofit.com/en/punctuation/
-				⊡ = 1 ⸦⸬⸬⸬⸧ = 10 
-
-					N= 123
-
-					⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧	⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧	⊡⊡⊡
-					⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧
-					⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧
-					⸦⸬⸬⸬⸧
-					     100	            20           3
+				canvas.TKCanvas.itemconfig(cir, fill="Blue")
+				canvas.TKCanvas.itemconfig(tex, text="cambio de texto")
+				window['-canvas-'].TKCanvas.move(cir, 20, 20)
+				canvas.TKCanvas.itemconfig(img)
+				window['-canvas-'].TKCanvas.move(img, 120, 120)
 
 
-					N= 1220
-
+				# window['-ml-'].update("La suma de {0} + {1} es {2}\n".format(values['-INPUT1-'], values['-INPUT2-'], sumar(a, b)))
+				# window['-ml-'].update("Unidades\t\tDecenas\t\tMillares\n⊡ = 1\t\t⸦⸬⸬⸬⸧ = 10\t\t‖ = 1000\n", append=True)
+				# window['-ml-'].update("""
+				# N= 123
+				# ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧		⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧		⊡⊡⊡
+				# ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧
+				# ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧
+				# ⸦⸬⸬⸬⸧
+			 #     100		            		20           	3""", append=True)
 			else:
 				window['Resultado'].update("Debes de escribir dos numeros para sumar!")							
 
