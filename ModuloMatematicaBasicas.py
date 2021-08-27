@@ -6,27 +6,103 @@ def collapse(layout, key):
 	return sg.pin(sg.Column(layout, key=key, visible=False))
 
 
+# def suma():
+
+# 	SYMBOL_UP =    '▲ Procedimiento'
+# 	SYMBOL_DOWN =  '▼ Procedimiento'
+
+# 	datos = [
+# 			[sg.Text("Primer numero: ")],
+# 			[sg.Input(key='-INPUT1-')],
+# 			[sg.Text("Segundo numero: ")],
+# 			[sg.Input(key='-INPUT2-')],	
+# 			[sg.T(key='Resultado')],
+# 			[sg.Button('Aceptar'), sg.Button('Salir')]
+# 		]
+# 	process = [
+# 				# [sg.Multiline(size=(80,15), key='-ml-', autoscroll=True, disabled=False)]
+# 	    		[sg.Canvas(size=(300, 300), background_color='#afeeee', key='-canvas-')]
+# 			]
+# 	layout = [	datos,
+# 				[sg.B(SYMBOL_DOWN,  key="-open_process-")],
+# 				[collapse(process, '-Process-')]
+# 			]
+
+# 	window = sg.Window('Suma', layout, modal=True, finalize=True)
+
+# 	canvas = window['-canvas-']
+# 	cir = canvas.TKCanvas.create_oval(50, 50, 100, 100) 
+# 	tex = canvas.TKCanvas.create_text(100, 10, fill="darkblue", font="Times 20 italic bold", text="Bla bla bla")  
+    
+# 	coin = Image.open("coin.png")
+# 	resizCoin = coin.resize((40, 40))
+# 	imgCoin = ImageTk.PhotoImage(resizCoin)
+# 	img = canvas.TKCanvas.create_image(20, 20, image=imgCoin, anchor='center')
+# 	# cir = window['-canvas-'].TKCanvas.create_oval(50, 50, 100, 100)
+
+# 	opened1 = False
+
+# 	while True:
+# 		event, values = window.read()
+# 		if event == sg.WINDOW_CLOSED or event == 'Salir':
+# 			break
+# 		if event == 'Aceptar':
+# 			if values['-INPUT1-'].isnumeric() and values['-INPUT2-'].isnumeric():
+# 				a=int(values['-INPUT1-'])
+# 				b=int(values['-INPUT2-'])
+# 				window['Resultado'].update("La suma de {0} + {1} es {2}".format(values['-INPUT1-'], values['-INPUT2-'], sumar(a, b)))
+
+# 				canvas.TKCanvas.itemconfig(cir, fill="Blue")
+
+# 				canvas.TKCanvas.itemconfig(tex, text="cambio de texto")
+
+# 				window['-canvas-'].TKCanvas.move(cir, 20, 20)
+
+# 				canvas.TKCanvas.itemconfig(img)
+
+# 				window['-canvas-'].TKCanvas.move(img, 120, 120)
+
+
+# 				# window['-ml-'].update("La suma de {0} + {1} es {2}\n".format(values['-INPUT1-'], values['-INPUT2-'], sumar(a, b)))
+# 				# window['-ml-'].update("Unidades\t\tDecenas\t\tMillares\n⊡ = 1\t\t⸦⸬⸬⸬⸧ = 10\t\t‖ = 1000\n", append=True)
+# 				# window['-ml-'].update("""
+# 				# N= 123
+# 				# ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧		⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧		⊡⊡⊡
+# 				# ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧
+# 				# ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧
+# 				# ⸦⸬⸬⸬⸧
+# 			 #     100		            		20           	3""", append=True)
+# 			else:
+# 				window['Resultado'].update("Debes de escribir dos numeros para sumar!")							
+
+# 		if event.startswith('-open_process-'):
+# 			opened1 = not opened1
+# 			window['-open_process-'].update(SYMBOL_DOWN if opened1 else SYMBOL_UP)
+# 			window['-Process-'].update(visible=opened1)
+			
+
+# 	window.close()
+
+# def sumar(a, b):
+# 	return (a + b)
+
+
+
+
+
 def suma():
 
 	SYMBOL_UP =    '▲ Procedimiento'
 	SYMBOL_DOWN =  '▼ Procedimiento'
 
 	datos = [
-			[sg.Text("Primer numero: ")],
+			[sg.Text("Suma de numeros: ")],
 			[sg.Input(key='-INPUT1-')],
-			[sg.Text("Segundo numero: ")],
-			[sg.Input(key='-INPUT2-')],	
 			[sg.T(key='Resultado')],
 			[sg.Button('Aceptar'), sg.Button('Salir')]
 		]
-	process = [
-				# [sg.Multiline(size=(80,15), key='-ml-', autoscroll=True, disabled=False)]
-	    		[sg.Canvas(size=(300, 300), background_color='#afeeee', key='-canvas-')]
-			]
-	layout = [	datos,
-				[sg.B(SYMBOL_DOWN,  key="-open_process-")],
-				[collapse(process, '-Process-')]
-			]
+	process = [[sg.Canvas(size=(300, 300), background_color='#afeeee', key='-canvas-')]]
+	layout = [	datos,	[sg.B(SYMBOL_DOWN,  key="-open_process-")], [collapse(process, '-Process-')]]
 
 	window = sg.Window('Suma', layout, modal=True, finalize=True)
 
@@ -38,48 +114,86 @@ def suma():
 	resizCoin = coin.resize((40, 40))
 	imgCoin = ImageTk.PhotoImage(resizCoin)
 	img = canvas.TKCanvas.create_image(20, 20, image=imgCoin, anchor='center')
-	# cir = window['-canvas-'].TKCanvas.create_oval(50, 50, 100, 100)
 
 	opened1 = False
-
 	while True:
 		event, values = window.read()
 		if event == sg.WINDOW_CLOSED or event == 'Salir':
 			break
 		if event == 'Aceptar':
-			if values['-INPUT1-'].isnumeric() and values['-INPUT2-'].isnumeric():
-				a=int(values['-INPUT1-'])
-				b=int(values['-INPUT2-'])
-				window['Resultado'].update("La suma de {0} + {1} es {2}".format(values['-INPUT1-'], values['-INPUT2-'], sumar(a, b)))
+			if values['-INPUT1-']:
+				sep = values['-INPUT1-'].split('+')
+				clean = [num.strip(' ') for num in sep]
+				check = [int(s) for s in clean if s.isdigit()]
+				check2 = [s for s in clean if s.isdigit()]
+
+				un=[]
+				de=[]
+				ce=[]
+				mi=[]
+				for i in check2:
+					if len(i) == 1:
+						print('Unidades')
+
+						u= int(i)
+
+						un.append(u)
+
+						print('Lista Unidades: ',un)
+
+						for i in un:
+							print(i)
+							x=1
+							while x <= i:
+								print('x:',x,' i:',i)
+								print(canvas.TKCanvas.create_image((30*x), (20*x), image=imgCoin, anchor='center'))
+								x += 1
+
+					elif len(i) == 2:
+						print('Decenas')
+						d= int(i)
+						de.append(d)
+						print(de)
+					elif len(i) == 3:
+						print('Centenas')
+						c= int(i)
+						ce.append(c)
+						print(ce)
+					elif len(i) == 4:
+						print('Millares')
+						m= int(i)
+						mi.append(m)
+						print(mi)
+
+				# canvas.TKCanvas.itemconfig(tex, text="Text: {0}".format(u))
+				Fin = sum(check)
+			
+				window['Resultado'].update("La suma es {0}".format(Fin))
+				
+
 				canvas.TKCanvas.itemconfig(cir, fill="Blue")
-				canvas.TKCanvas.itemconfig(tex, text="cambio de texto")
+
+				# canvas.TKCanvas.itemconfig(tex, text="cambio de texto")
+
 				window['-canvas-'].TKCanvas.move(cir, 20, 20)
+
 				canvas.TKCanvas.itemconfig(img)
+				
 				window['-canvas-'].TKCanvas.move(img, 120, 120)
-
-
-				# window['-ml-'].update("La suma de {0} + {1} es {2}\n".format(values['-INPUT1-'], values['-INPUT2-'], sumar(a, b)))
-				# window['-ml-'].update("Unidades\t\tDecenas\t\tMillares\n⊡ = 1\t\t⸦⸬⸬⸬⸧ = 10\t\t‖ = 1000\n", append=True)
-				# window['-ml-'].update("""
-				# N= 123
-				# ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧		⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧		⊡⊡⊡
-				# ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧
-				# ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧ ⸦⸬⸬⸬⸧
-				# ⸦⸬⸬⸬⸧
-			 #     100		            		20           	3""", append=True)
 			else:
-				window['Resultado'].update("Debes de escribir dos numeros para sumar!")							
+				window['Resultado'].update("Debes de escribir al menos dos numeros para sumar!")							
 
 		if event.startswith('-open_process-'):
 			opened1 = not opened1
 			window['-open_process-'].update(SYMBOL_DOWN if opened1 else SYMBOL_UP)
 			window['-Process-'].update(visible=opened1)
-			
-
 	window.close()
 
 def sumar(a, b):
 	return (a + b)
+
+
+
 
 
 
