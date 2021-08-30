@@ -1,3 +1,4 @@
+from tkinter import Canvas
 import PySimpleGUI as sg
 from PIL import Image, ImageTk
 import math
@@ -86,21 +87,22 @@ def collapse(layout, key):
 # def sumar(a, b):
 # 	return (a + b)
 
-def imprimirImagen(lista,unidad,imagen,longitud):
+def imprimirImagen(lista,unidad,imagen,longitud,ejeX,divisor,canvas):
 	print(unidad)
 	d= int(longitud)
-	lista.append(d)
+	aux = d / divisor
+	lista.append(aux)
 	print('Lista {}: '.format(unidad),lista)
 	ejeY = 20
-	for i in lista:
-		ejeX = 30
+	for d in lista:
 		x=1
 		while x <= d:
 			print('x:',x,' i:',longitud)
-			print(canvas.TKCanvas.create_image((ejeX), (ejeY), image=imagen, anchor='center'))
+			print(canvas.create_image((ejeX),(ejeY),image=imagen,anchor='center'))
 			x += 1
 			ejeX += 30
 		ejeY += 40
+	return ejeX
 
 
 
@@ -121,6 +123,7 @@ def suma():
 	window = sg.Window('Suma', layout, modal=True, finalize=True)
 
 	canvas = window['-canvas-']
+	canvass = canvas.TKCanvas
 #	cir = canvas.TKCanvas.create_oval(50, 50, 100, 100) 
 #	tex = canvas.TKCanvas.create_text(100, 10, fill="darkblue", font="Times 20 italic bold", text="Bla bla bla")  
     
@@ -148,26 +151,15 @@ def suma():
 				de=[]
 				ce=[]
 				mi=[]
-#				ejeY = 20
 				for i in check2:
 					if len(i) == 1:
-						imprimirImagen(un,'Unidades',imgCoin,i)
+						gx = 30
+						imprimirImagen(un,'Unidades',imgCoin,i,gx,1,canvass)
+						del gx
 					elif len(i) == 2:
-						print('Decenas')
-						d= int(i)
-						d *=.1
-						de.append(d)
-						print('Lista Decenas: ',de)
-						ejeY = 20
-						for i in de:
-							ejeX = 30
-							x=1
-							while x <= i:
-								print('x:',x,' i:',i)
-								print(canvas.TKCanvas.create_image((ejeX), (ejeY), image=imgCoin10, anchor='center'))
-								x += 1
-								ejeX += 30
-							ejeY += 40
+						var = imprimirImagen(de,'Decenas',imgCoin10,i,30,10,canvass)
+						last_char = i[-1]
+						imprimirImagen(un,'Unidades',imgCoin,last_char,90,1,canvass)
 					elif len(i) == 3:
 						print('Centenas')
 						c= int(i)
@@ -178,7 +170,7 @@ def suma():
 						m= int(i)
 						mi.append(m)
 						print(mi)
-					ejeY += 40
+#					ejeY += 40
 
 				# canvas.TKCanvas.itemconfig(tex, text="Text: {0}".format(u))
 				Fin = sum(check)
