@@ -101,7 +101,7 @@ def opciones(evento):
 materias = [[sg.Button('Matematicas'), sg.Button('Español'), sg.Button('Fisica'), sg.Button('Algebra'), sg.Button('Calculo'), sg.Button('Programacion')]]
 
 subTemas = [ [sg.pin(sg.Button('Suma', key = '_suma_', visible=False)),
-                	sg.pin(sg.Button('Comparacion de numeros', key = '_comparacion_', visible=False)),
+            		sg.pin(sg.Button('Comparacion de numeros', key = '_comparacion_', visible=False)),
                 	sg.pin(sg.Button('Area Rectangulo', key = '_areaRect_', visible=False)),
                 	sg.pin(sg.Button('Multiplicacion', key = '_multiplicacion_', visible=False)),
                 	sg.pin(sg.Button('Division', key = '_division_', visible=False)),
@@ -109,13 +109,11 @@ subTemas = [ [sg.pin(sg.Button('Suma', key = '_suma_', visible=False)),
                 	sg.pin(sg.Button('Teorema de pitagoras', key = '_pitagoras_', visible=False)),
                 	sg.pin(sg.Button('Area Trapecio', key = '_areaTrap_', visible=False)),
                 	sg.pin(sg.Button('Factorizacion', key = '_factorizacion_', visible=False)),
-
                 	sg.pin(sg.Button('Lectura', key = '_lectura_', visible=False)),
                 	sg.pin(sg.Button('Comprension', key = '_comprension_', visible=False)),
-
                 	sg.pin(sg.Button('Tiro parabolico', key = '_parabolico_', visible=False)),
                 	sg.pin(sg.Button('Calor y temperatura', key = '_calor_', visible=False)),
-                	] ]
+                	]]
 
 layout = [materias, subTemas]
 
