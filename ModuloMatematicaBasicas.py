@@ -11,51 +11,43 @@ def imprimirImagen(lista ,imagen, canvas):
 	#2345+123+12+4
 
 	ejeY=20
+	num=0
 	for num in lista:
 		sep = resto(num) #[2,3,4,5]
-		m=1
-		c=1
-		d=1
-		u=1
-		ejeX=20
+		print('sep:',sep)
+		print('imagenes',len(imagen))
 
-		while m <= sep[0]:
-			canvas.create_image((ejeX),(ejeY),image=imagen[3],anchor='center')
-			ejeX+=32
-			m+=1
-		while c <= sep[1]:
-			canvas.create_image((ejeX),(ejeY),image=imagen[2],anchor='center')
-			ejeX+=32
-			c+=1
-		while d <= sep[2]:
-			canvas.create_image((ejeX),(ejeY),image=imagen[1],anchor='center')
-			ejeX+=20
-			d+=1
-		while u <= sep[3]:
-			canvas.create_image((ejeX),(ejeY),image=imagen[0],anchor='center')
-			ejeX+=15
-			u+=1
+		ejeX = 20
+		img = 0
+		i=0
+		for n in sep: 
+			m = 1
+			while m <= sep[i]: 
+				canvas.create_image((ejeX),(ejeY),image=imagen[img],anchor='center')
+				ejeX+=30
+				m+=1
+			img+=1
+			i+=1
 		ejeY+=30
+		sep.clear()
 	
 
-def resto(num):
-	tmp=[]
-	millar = (num//1000)	#2   0   0  0
-	restoM = num%1000		#345 123 12 4
-	tmp.append(millar)
-
-	centena = (restoM//100) #3   1   0  0
-	restoC = (restoM%100) 	#45  23  12 4
-	tmp.append(centena)
-
-	decena = (restoC//10)	#4   2   1  0 
-	restoD = (restoC%10) 	#5   3   2  4
-	tmp.append(decena)
-
-	unidad = (restoD//1) 	#5   3   2  4
-	restoU = (restoD%1) 	#0   0   0  0
-	tmp.append(unidad)
-	return tmp
+def resto(num, tmp1=[]):
+	aux=[]
+	if num == 0:
+		return
+	else:
+		x=2
+		aux.append(1)
+		while x <= len(str(num)):
+			aux.append(0)
+			x+=1
+		divi = int(''.join(map(str, aux)))
+		entero = (num//divi)
+		restoN = num%divi
+		tmp1.append(entero)
+		resto(restoN)
+	return tmp1
 
 
 def suma():
@@ -95,9 +87,6 @@ def suma():
 	resizCoin1000 = coin1000.resize((30, 30))
 	imgCoin1000 = ImageTk.PhotoImage(resizCoin1000)
 
-	
-
-
 	opened1 = False
 	while True:
 		event, values = window.read()
@@ -109,35 +98,9 @@ def suma():
 				sep = values['-INPUT1-'].split('+')
 				clean = [num.strip(' ') for num in sep]
 				check = [int(s) for s in clean if s.isdigit()]
-				# check2 = [s for s in clean if s.isdigit()]
-				# check.sort()
 				print('Lista: ',check,'\n')
-				un=[]
-				de=[]
-				ce=[]
-				mi=[]
-				imagenes=[imgCoin,imgCoin10,imgCoin100,imgCoin1000]
-				# for i in check2:
-				# 	# if len(i) == 1:
-						
-				# 	# 	# imprimirImagen(un,'Unidades',imgCoin,i,1,canvass)
-				# 	# elif len(i) == 2:
-
-				# 	# 	# varX = imprimirImagen(de,'Decenas',imgCoin10,i,10,canvass)
-				# 	# 	# last_char = i[-1]
-				# 	# 	# print('Return var: ',varX)
-				# 	# 	# imprimirImagen(un,'Unidades',imgCoin,last_char,90,1,canvass)
-
-				# 	# elif len(i) == 3:
-				# 	# 	print('Centenas')
-				# 	# 	print(ce)
-				# 	# elif len(i) == 4:
-				# 	# 	print('Millares')
-				# 	# 	m= int(i)
-				# 	# 	mi.append(m)
-				# 	# 	print(mi)
-				# for i in check:
-				# imprimirImagen(check,imagenes,i,canvass)
+			
+				imagenes=[imgCoin1000,imgCoin100,imgCoin10,imgCoin,imgCoin,imgCoin,imgCoin,imgCoin]
 				imprimirImagen(check,imagenes,canvass)
 				Fin = sum(check)
 			
@@ -150,15 +113,6 @@ def suma():
 			window['-open_process-'].update(SYMBOL_DOWN if opened1 else SYMBOL_UP)
 			window['-Process-'].update(visible=opened1)
 	window.close()
-
-def sumar(a, b):
-	return (a + b)
-
-
-
-
-
-
 
 def areaRectangulo():
 	layout = [
