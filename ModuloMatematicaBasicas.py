@@ -6,36 +6,36 @@ import math
 def collapse(layout, key):
 	return sg.pin(sg.Column(layout, key=key, visible=False))
 	
-def imprimirImagen(lista ,imagen, canvas):
+def imprimirImagen(lista_numeros ,lista_imagen, canvas):
 	#2345 #123 #12 #4
 	#2345+123+12+4
 
 	ejeY=20
 	num=0
-	for num in lista:
+	for num in lista_numeros:
 		sep = resto(num) #[2,3,4,5]
 		print('sep:',sep)
-		print('imagenes',len(imagen))
+		print('imagenes',len(lista_imagen))
 
 		ejeX = 20
-		img = 0
-		i=0
+		img = len(str(num))
+		i = 0
 		for n in sep: 
 			m = 1
 			while m <= sep[i]: 
-				canvas.create_image((ejeX),(ejeY),image=imagen[img],anchor='center')
+				canvas.create_image((ejeX),(ejeY),image=lista_imagen[img-1],anchor='center')
 				ejeX+=30
 				m+=1
-			img+=1
+			img-=1
 			i+=1
 		ejeY+=30
 		sep.clear()
 	
 
-def resto(num, tmp1=[]):
-	aux=[]
+def resto(num, tmp1=[]):					#crea tmp1 como lista vacia
+	aux=[]									#aux guarda el numero divisor que se usa para mod
 	if num == 0:
-		return
+		return 0
 	else:
 		x=2
 		aux.append(1)
@@ -57,7 +57,7 @@ def suma():
 
 	datos = [
 			[sg.Text("Suma de numeros: ")],
-			[sg.Input(key='-INPUT1-')],
+			[sg.Input(key='-INPUT1-')],					#cadena de caracteres como entrada de datos
 			[sg.T(key='Resultado')],
 			[sg.Button('Aceptar'), sg.Button('Salir')]
 		]
@@ -68,24 +68,29 @@ def suma():
 
 	canvas = window['-canvas-']
 	canvass = canvas.TKCanvas
-     
-	# coin = Image.open("coin.png")
-	coin = Image.open("unidad.png")
-	resizCoin = coin.resize((20, 20))
-	imgCoin = ImageTk.PhotoImage(resizCoin)
 
-	# coin10 = Image.open("coin10.png")
-	coin10 = Image.open("decena.png")
-	resizCoin10 = coin10.resize((30, 30))
-	imgCoin10 = ImageTk.PhotoImage(resizCoin10)
+	unidad = Image.open("unidad.png")
+	resize_unidad = unidad.resize((20, 20))
+	img_unidad = ImageTk.PhotoImage(resize_unidad)
 
-	coin100 = Image.open("centena.png")
-	resizCoin100 = coin100.resize((30, 30))
-	imgCoin100 = ImageTk.PhotoImage(resizCoin100)
+	decena = Image.open("decena.png")
+	resize_decena = decena.resize((30, 30))
+	img_decena = ImageTk.PhotoImage(resize_decena)
 
-	coin1000 = Image.open("coin10.png")
-	resizCoin1000 = coin1000.resize((30, 30))
-	imgCoin1000 = ImageTk.PhotoImage(resizCoin1000)
+	centena = Image.open("centena.png")
+	resize_centena = centena.resize((30, 30))
+	img_centena = ImageTk.PhotoImage(resize_centena)
+
+	millar = Image.open("coin.png")
+	resize_millar = millar.resize((30, 30))
+	img_millar = ImageTk.PhotoImage(resize_millar)
+
+	decena_millar = Image.open("coin10.png")
+	resize_decena_millar = decena_millar.resize((30, 30))
+	img_decena_millar = ImageTk.PhotoImage(resize_decena_millar)
+
+	#imagenes=[img_decena_millar, img_millar, img_centena, img_decena, img_unidad]
+	imagenes = [img_unidad, img_decena, img_centena, img_millar, img_decena_millar]
 
 	opened1 = False
 	while True:
@@ -95,16 +100,15 @@ def suma():
 		if event == 'Aceptar':
 			canvass.delete('all')
 			if values['-INPUT1-']:
-				sep = values['-INPUT1-'].split('+')
-				clean = [num.strip(' ') for num in sep]
-				check = [int(s) for s in clean if s.isdigit()]
+				sep = values['-INPUT1-'].split('+')					#separa la cadena de caracteres en lista de str
+				clean = [num.strip(' ') for num in sep]				#quita posibles espacios ingresados
+				check = [int(s) for s in clean if s.isdigit()]		#convierte numeros str en int
 				print('Lista: ',check,'\n')
 			
-				imagenes=[imgCoin1000,imgCoin100,imgCoin10,imgCoin,imgCoin,imgCoin,imgCoin,imgCoin]
 				imprimirImagen(check,imagenes,canvass)
-				Fin = sum(check)
+				sumatoria = sum(check)
 			
-				window['Resultado'].update("La suma es {0}".format(Fin))
+				window['Resultado'].update("La suma es {0}".format(sumatoria))
 			else:
 				window['Resultado'].update("Debes de escribir al menos dos numeros para sumar!")							
 
@@ -113,6 +117,20 @@ def suma():
 			window['-open_process-'].update(SYMBOL_DOWN if opened1 else SYMBOL_UP)
 			window['-Process-'].update(visible=opened1)
 	window.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def areaRectangulo():
 	layout = [
