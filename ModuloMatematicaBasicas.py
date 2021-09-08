@@ -33,20 +33,26 @@ def imprimirImagen(lista_numeros ,lista_imagen, canvas):
 	
 
 def resto(num, tmp1=[]):					#crea tmp1 como lista vacia
-	aux=[]									#aux guarda el numero divisor que se usa para mod
-	if num == 0:
-		return 0
-	else:
-		x=2
-		aux.append(1)
-		while x <= len(str(num)):
-			aux.append(0)
-			x+=1
-		divi = int(''.join(map(str, aux)))
-		entero = (num//divi)
-		restoN = num%divi
-		tmp1.append(entero)
-		resto(restoN)
+	aux = list(str(num))
+	tmp1 = [int(x) for x in aux]
+#	tmp = int(''.join(map(str, aux)))
+#	print('tmp:',tmp)
+#	print(type(tmp))
+#	aux=[]									#aux guarda el numero divisor que se usa para mod
+
+#	if num == 0:
+#		return 0
+#	else:
+#		x=2
+#		aux.append(1)
+#		while x <= len(str(num)):
+#			aux.append(0)
+#			x+=1
+#		divi = int(''.join(map(str, aux)))
+#		entero = (num//divi)
+#		restoN = num%divi
+#		tmp1.append(entero)
+#		resto(restoN)
 	return tmp1
 
 
