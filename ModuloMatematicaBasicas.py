@@ -1,6 +1,11 @@
 from tkinter import Canvas
-import PySimpleGUI as sg
+from tkinter.constants import X
+from tkinter import *
+
 from PIL import Image, ImageTk
+
+import PySimpleGUI as sg
+
 import math
 
 def collapse(layout, key):
@@ -13,9 +18,10 @@ def imprimirImagen(lista_numeros ,lista_imagen, canvas):
 	ejeY=20
 	num=0
 	for num in lista_numeros:
-		sep = resto(num) #[2,3,4,5]
+		aux = list(str(num))					#separa el numero en lista
+		sep = [int(x) for x in aux]				#convierte cada elemento de la lista aux en entero
+#		sep = resto(num) #[2,3,4,5]
 		print('sep:',sep)
-		print('imagenes',len(lista_imagen))
 
 		ejeX = 20
 		img = len(str(num))
@@ -31,30 +37,6 @@ def imprimirImagen(lista_numeros ,lista_imagen, canvas):
 		ejeY+=30
 		sep.clear()
 	
-
-def resto(num, tmp1=[]):					#crea tmp1 como lista vacia
-	aux = list(str(num))
-	tmp1 = [int(x) for x in aux]
-#	tmp = int(''.join(map(str, aux)))
-#	print('tmp:',tmp)
-#	print(type(tmp))
-#	aux=[]									#aux guarda el numero divisor que se usa para mod
-
-#	if num == 0:
-#		return 0
-#	else:
-#		x=2
-#		aux.append(1)
-#		while x <= len(str(num)):
-#			aux.append(0)
-#			x+=1
-#		divi = int(''.join(map(str, aux)))
-#		entero = (num//divi)
-#		restoN = num%divi
-#		tmp1.append(entero)
-#		resto(restoN)
-	return tmp1
-
 
 def suma():
 
@@ -87,16 +69,24 @@ def suma():
 	resize_centena = centena.resize((30, 30))
 	img_centena = ImageTk.PhotoImage(resize_centena)
 
-	millar = Image.open("coin.png")
+	millar = Image.open("millar.png")
 	resize_millar = millar.resize((30, 30))
 	img_millar = ImageTk.PhotoImage(resize_millar)
 
-	decena_millar = Image.open("coin10.png")
+	decena_millar = Image.open("decenas de millar.png")
 	resize_decena_millar = decena_millar.resize((30, 30))
 	img_decena_millar = ImageTk.PhotoImage(resize_decena_millar)
 
-	#imagenes=[img_decena_millar, img_millar, img_centena, img_decena, img_unidad]
-	imagenes = [img_unidad, img_decena, img_centena, img_millar, img_decena_millar]
+	centena_millar = Image.open("centenas de millar.png")
+	resize_centena_millar = centena_millar.resize((30, 30))
+	img_centena_millar = ImageTk.PhotoImage(resize_centena_millar)
+
+	millon = Image.open("coin.png")
+	resize_millon = millon.resize((40, 40))
+	img_millon = ImageTk.PhotoImage(resize_millon)
+
+	imagenes = [img_unidad, img_decena, img_centena, img_millar, img_decena_millar,
+				img_centena_millar, img_millon]
 
 	opened1 = False
 	while True:
@@ -110,11 +100,20 @@ def suma():
 				clean = [num.strip(' ') for num in sep]				#quita posibles espacios ingresados
 				check = [int(s) for s in clean if s.isdigit()]		#convierte numeros str en int
 				print('Lista: ',check,'\n')
-			
-				imprimirImagen(check,imagenes,canvass)
 				sumatoria = sum(check)
-			
 				window['Resultado'].update("La suma es {0}".format(sumatoria))
+
+				#inicio de la impresion de imagenes
+				imprimirImagen(check,imagenes,canvass)
+				aux = []
+#				check.append(sumatoria)
+				aux.append(sumatoria)
+#				print(type(check))
+#				print('check: ',check)
+				print(type(aux))
+				print('aux: ',aux)
+#				imprimirImagen(check, imagenes, canvass)
+				imprimirImagen(aux, imagenes, canvass)
 			else:
 				window['Resultado'].update("Debes de escribir al menos dos numeros para sumar!")							
 
@@ -247,7 +246,7 @@ def PorcentajeReglaTres():
 	window = sg.Window('Porcentaje en regla de tres', layout, modal = True)
 	while True:
 		event, values = window.read()
-		if event == WINDOW_CLOSED or event == 'Salir':
+		if event == sg.WINDOW_CLOSED or event == 'Salir':
 			break
 		total = float(values['total'])
 		cantidad = float(values['cantidad'])
@@ -267,7 +266,7 @@ def HipotenusaPitagoras():
 	window = sg.Window('Hipotenusa en teorema de pitagoras', layout, modal=True)
 	while True:
 		event, values = window.read()
-		if event == WINDOW_CLOSED or event == 'Salir':
+		if event == sg.WINDOW_CLOSED or event == 'Salir':
 			break
 		CatetoOpuesto = float(values['CateoOpuesto'])
 		CatetoAdyacente = float(values['CatetoAdyacente'])
