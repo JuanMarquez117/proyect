@@ -1,5 +1,3 @@
-from tkinter import Canvas
-from tkinter.constants import X
 from tkinter import *
 
 from PIL import Image, ImageTk
@@ -8,34 +6,53 @@ import PySimpleGUI as sg
 
 import math
 
+#variables globales
+ejeY = 20
+
 def collapse(layout, key):
 	return sg.pin(sg.Column(layout, key=key, visible=False))
 	
-def imprimirImagen(lista_numeros ,lista_imagen, canvas):
-	#2345 #123 #12 #4
-	#2345+123+12+4
+def imprimirImagen(lista_numeros ,lista_imagen, cantidad_elementos, canvas):
 
-	ejeY=20
-	num=0
 	for num in lista_numeros:
 		aux = list(str(num))					#separa el numero en lista
 		sep = [int(x) for x in aux]				#convierte cada elemento de la lista aux en entero
-#		sep = resto(num) #[2,3,4,5]
 		print('sep:',sep)
 
-		ejeX = 20
+		ejeX = 60
+		global ejeY
 		img = len(str(num))
+		img -= 1						#img es la posicion de la imagen a imprmir
 		i = 0
-		for n in sep: 
+		for n in sep:
+			if cantidad_elementos == 0:
+				print('cantidad = 0')
+			elif i == math.floor(cantidad_elementos/2):
+				print('cantidad >= 1')
+				imprimirSignoMas(ejeX, canvas)
+#				signo_mas = Image.open("signo mas.png")
+#				resize_signo_mas = signo_mas.resize((40, 40))
+#				img_signo_mas = ImageTk.PhotoImage(resize_signo_mas)
+
+#				canvas.create_image((ejeX-40), (ejeY), image=img_signo_mas, anchor='center')
+		
 			m = 1
 			while m <= sep[i]: 
-				canvas.create_image((ejeX),(ejeY),image=lista_imagen[img-1],anchor='center')
+				canvas.create_image((ejeX),(ejeY),image=lista_imagen[img],anchor='center')
 				ejeX+=30
 				m+=1
 			img-=1
 			i+=1
 		ejeY+=30
 		sep.clear()
+
+def imprimirSignoMas(ejeX, canvas):
+	print('entrada a imprimirSignoMas()')
+	signo_mas = Image.open("unidad.png")
+	resize_signo_mas = signo_mas.resize((40, 40))
+	img_signo_mas = ImageTk.PhotoImage(resize_signo_mas)
+
+	canvas.create_image((ejeX), (ejeY), image=img_signo_mas, anchor='center')
 	
 
 def suma():
@@ -97,6 +114,7 @@ def suma():
 			canvass.delete('all')
 			if values['-INPUT1-']:
 				sep = values['-INPUT1-'].split('+')					#separa la cadena de caracteres en lista de str
+				cantidad_elementos = len(sep)
 				clean = [num.strip(' ') for num in sep]				#quita posibles espacios ingresados
 				check = [int(s) for s in clean if s.isdigit()]		#convierte numeros str en int
 				print('Lista: ',check,'\n')
@@ -104,16 +122,20 @@ def suma():
 				window['Resultado'].update("La suma es {0}".format(sumatoria))
 
 				#inicio de la impresion de imagenes
-				imprimirImagen(check,imagenes,canvass)
-				aux = []
-#				check.append(sumatoria)
+				#NOTA: pruebas.py tiene codigo para la linea de resultado
+
+				imprimirImagen(check,imagenes, cantidad_elementos, canvass)
+				aux = []					#lista vacia para convertir el resultado
 				aux.append(sumatoria)
-#				print(type(check))
-#				print('check: ',check)
-				print(type(aux))
-				print('aux: ',aux)
-#				imprimirImagen(check, imagenes, canvass)
-				imprimirImagen(aux, imagenes, canvass)
+				global ejeY
+				#funcionamiento de la funcion "create_line()":
+				#create_line(ejeX,inicio_de_linea_ejeY, longitud_de_linea, final_de_linea_ejeY)
+				for n in range(5):			#engrosa la linea
+					canvass.create_line(0, ejeY-10, 400, ejeY-10, fill="black")
+					ejeY += 1
+				ejeY += 20
+				imprimirImagen(aux, imagenes, cantidad_elementos, canvass)
+				ejeY = 20
 			else:
 				window['Resultado'].update("Debes de escribir al menos dos numeros para sumar!")							
 

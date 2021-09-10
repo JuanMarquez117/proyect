@@ -125,7 +125,7 @@ while True:
 		break
 
 	submenu(event)
-	print(event)
+#	print(event)
 	opciones(event)
 	
 
