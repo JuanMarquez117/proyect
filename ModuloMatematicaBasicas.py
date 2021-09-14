@@ -12,30 +12,23 @@ ejeY = 20
 def collapse(layout, key):
 	return sg.pin(sg.Column(layout, key=key, visible=False))
 	
-def imprimirImagen(lista_numeros ,lista_imagen, cantidad_elementos, canvas):
-
+def imprimirImagen(lista_numeros ,lista_imagen, cantidad_elementos, canvas, signo='N'):
+												#lista_numeros[12] 	|	lista_numeros[2,2]
+												#cantidad_elem[1]	|	cantidad_elem[2]
 	for num in lista_numeros:
-		aux = list(str(num))					#separa el numero en lista
-		sep = [int(x) for x in aux]				#convierte cada elemento de la lista aux en entero
+		aux = list(str(num))					#['1','2']			|	['2']
+		sep = [int(x) for x in aux]				#[1,2]				|	[2]
 		print('sep:',sep)
 
 		ejeX = 60
 		global ejeY
-		img = len(str(num))
-		img -= 1						#img es la posicion de la imagen a imprmir
-		i = 0
-		for n in sep:
-			if cantidad_elementos == 0:
-				print('cantidad = 0')
-			elif i == math.floor(cantidad_elementos/2):
-				print('cantidad >= 1')
-				imprimirSignoMas(ejeX, canvas)
-#				signo_mas = Image.open("signo mas.png")
-#				resize_signo_mas = signo_mas.resize((40, 40))
-#				img_signo_mas = ImageTk.PhotoImage(resize_signo_mas)
 
-#				canvas.create_image((ejeX-40), (ejeY), image=img_signo_mas, anchor='center')
-		
+		img = len(str(num))-1					#len(str(12))-1 = 1	| len(str(2))-1 = 0
+		i = 0
+
+		print('lista numeros:{}, cantidad_elementos:{}, String:{}, num:{}, img:{}'.format(lista_numeros,cantidad_elementos,signo,num,img))
+
+		for n in sep:							#[1]->[2]	|	[2]
 			m = 1
 			while m <= sep[i]: 
 				canvas.create_image((ejeX),(ejeY),image=lista_imagen[img],anchor='center')
@@ -43,18 +36,12 @@ def imprimirImagen(lista_numeros ,lista_imagen, cantidad_elementos, canvas):
 				m+=1
 			img-=1
 			i+=1
-		ejeY+=30
+		ejeY+=32
 		sep.clear()
 
-def imprimirSignoMas(ejeX, canvas):
-	print('entrada a imprimirSignoMas()')
-	signo_mas = Image.open("unidad.png")
-	resize_signo_mas = signo_mas.resize((40, 40))
-	img_signo_mas = ImageTk.PhotoImage(resize_signo_mas)
-
-	canvas.create_image((ejeX), (ejeY), image=img_signo_mas, anchor='center')
+	if signo == 'S':
+		canvas.create_text(10, ejeY/2, fill="darkblue", font="Times 25 italic bold", text="+")
 	
-
 def suma():
 
 	SYMBOL_UP =    '▲ Procedimiento'
@@ -74,33 +61,39 @@ def suma():
 	canvas = window['-canvas-']
 	canvass = canvas.TKCanvas
 
-	unidad = Image.open("unidad.png")
+
+	unidad = Image.open("Unidades.png")
 	resize_unidad = unidad.resize((20, 20))
 	img_unidad = ImageTk.PhotoImage(resize_unidad)
 
-	decena = Image.open("decena.png")
-	resize_decena = decena.resize((30, 30))
+	decena = Image.open("Decenas.png")
+	resize_decena = decena.resize((20, 20))
 	img_decena = ImageTk.PhotoImage(resize_decena)
 
-	centena = Image.open("centena.png")
-	resize_centena = centena.resize((30, 30))
+	centena = Image.open("Centenas.png")
+	resize_centena = centena.resize((20, 20))
 	img_centena = ImageTk.PhotoImage(resize_centena)
 
-	millar = Image.open("millar.png")
-	resize_millar = millar.resize((30, 30))
-	img_millar = ImageTk.PhotoImage(resize_millar)
+	unidadesMillar = Image.open("UnidadesMillar.png")
+	resize_unidadesMillar = unidadesMillar.resize((20, 20))
+	img_millar = ImageTk.PhotoImage(resize_unidadesMillar)
 
-	decena_millar = Image.open("decenas de millar.png")
-	resize_decena_millar = decena_millar.resize((30, 30))
-	img_decena_millar = ImageTk.PhotoImage(resize_decena_millar)
+	decenasMillar = Image.open("DecenasMillar.png")
+	resize_decenasMillar = decenasMillar.resize((20, 20))
+	img_decena_millar = ImageTk.PhotoImage(resize_decenasMillar)	
 
-	centena_millar = Image.open("centenas de millar.png")
-	resize_centena_millar = centena_millar.resize((30, 30))
-	img_centena_millar = ImageTk.PhotoImage(resize_centena_millar)
+	centenasMillar = Image.open("CentenasMillar.png")
+	resize_centenasMillar = centenasMillar.resize((20, 20))
+	img_centena_millar = ImageTk.PhotoImage(resize_centenasMillar)		
 
-	millon = Image.open("coin.png")
-	resize_millon = millon.resize((40, 40))
+	millon = Image.open("UnidadMillon.png")
+	resize_millon = millon.resize((20, 20))
 	img_millon = ImageTk.PhotoImage(resize_millon)
+
+	guia = Image.open("Resume.png")
+	resize_resume = guia.resize((250,100))
+	img_resume = ImageTk.PhotoImage(resize_resume)
+
 
 	imagenes = [img_unidad, img_decena, img_centena, img_millar, img_decena_millar,
 				img_centena_millar, img_millon]
@@ -123,18 +116,16 @@ def suma():
 
 				#inicio de la impresion de imagenes
 				#NOTA: pruebas.py tiene codigo para la linea de resultado
-
-				imprimirImagen(check,imagenes, cantidad_elementos, canvass)
+				imprimirImagen(check, imagenes, cantidad_elementos, canvass, 'S')
 				aux = []					#lista vacia para convertir el resultado
 				aux.append(sumatoria)
 				global ejeY
-				#funcionamiento de la funcion "create_line()":
+
 				#create_line(ejeX,inicio_de_linea_ejeY, longitud_de_linea, final_de_linea_ejeY)
-				for n in range(5):			#engrosa la linea
-					canvass.create_line(0, ejeY-10, 400, ejeY-10, fill="black")
-					ejeY += 1
-				ejeY += 20
-				imprimirImagen(aux, imagenes, cantidad_elementos, canvass)
+				canvass.create_line(0, ejeY-10, 400, ejeY-10, fill="black", width="5")
+				ejeY += 12
+
+				imprimirImagen(aux, imagenes, 0, canvass)
 				ejeY = 20
 			else:
 				window['Resultado'].update("Debes de escribir al menos dos numeros para sumar!")							
