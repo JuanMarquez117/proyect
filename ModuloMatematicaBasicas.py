@@ -7,7 +7,7 @@ import PySimpleGUI as sg
 import math
 
 #variables globales
-ejeY = 20
+ejeX = 20
 
 def collapse(layout, key):
 	return sg.pin(sg.Column(layout, key=key, visible=False))
@@ -20,8 +20,8 @@ def imprimirImagen(lista_numeros ,lista_imagen, cantidad_elementos, canvas, sign
 		sep = [int(x) for x in aux]				#[1,2]				|	[2]
 		print('sep:',sep)
 
-		ejeX = 60
-		global ejeY
+		ejeY = 60
+		global ejeX
 
 		img = len(str(num))-1					#len(str(12))-1 = 1	| len(str(2))-1 = 0
 		i = 0
@@ -32,15 +32,19 @@ def imprimirImagen(lista_numeros ,lista_imagen, cantidad_elementos, canvas, sign
 			m = 1
 			while m <= sep[i]: 
 				canvas.create_image((ejeX),(ejeY),image=lista_imagen[img],anchor='center')
-				ejeX+=30
+				ejeY+=20
 				m+=1
 			img-=1
 			i+=1
-		ejeY+=32
+
+			ejeY=60
+			ejeX+=22
+			
+		ejeX+=20
 		sep.clear()
 
 	if signo == 'S':
-		canvas.create_text(10, ejeY/2, fill="darkblue", font="Times 25 italic bold", text="+")
+		canvas.create_text(ejeX/2, 20, fill="darkblue", font="Times 25 italic bold", text="+")
 	
 def suma():
 
@@ -119,14 +123,15 @@ def suma():
 				imprimirImagen(check, imagenes, cantidad_elementos, canvass, 'S')
 				aux = []					#lista vacia para convertir el resultado
 				aux.append(sumatoria)
-				global ejeY
+				global ejeX
 
 				#create_line(ejeX,inicio_de_linea_ejeY, longitud_de_linea, final_de_linea_ejeY)
-				canvass.create_line(0, ejeY-10, 400, ejeY-10, fill="black", width="5")
-				ejeY += 12
+				# canvass.create_line(0, ejeY-10, 400, ejeY-10, fill="black", width="5")
+				canvass.create_line(ejeX-10, 50 , ejeX-10 , 200, fill="black", width="5")
+				ejeX += 12
 
 				imprimirImagen(aux, imagenes, 0, canvass)
-				ejeY = 20
+				ejeX = 20
 			else:
 				window['Resultado'].update("Debes de escribir al menos dos numeros para sumar!")							
 
