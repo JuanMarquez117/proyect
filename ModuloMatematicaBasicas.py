@@ -42,7 +42,7 @@ def imprimirImagen(lista_numeros ,lista_imagen, cantidad_elementos, canvas, sign
 			
 		ejeX+=20
 		sep.clear()
-
+		
 	if signo == 'S':
 		canvas.create_text(ejeX/2, 20, fill="darkblue", font="Times 25 italic bold", text="+")
 	
