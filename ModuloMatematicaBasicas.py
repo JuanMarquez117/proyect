@@ -12,7 +12,7 @@ ejeX = 20
 def collapse(layout, key):
 	return sg.pin(sg.Column(layout, key=key, visible=False))
 	
-def imprimirImagen(lista_numeros ,lista_imagen, cantidad_elementos, canvas, signo='N'):
+def imprimirImagen(lista_numeros ,lista_imagen, cantidad_elementos, canvas, signo=None, simbolo='N'):
 												#lista_numeros[12] 	|	lista_numeros[2,2]
 												#cantidad_elem[1]	|	cantidad_elem[2]
 	for num in lista_numeros:
@@ -26,7 +26,7 @@ def imprimirImagen(lista_numeros ,lista_imagen, cantidad_elementos, canvas, sign
 		img = len(str(num))-1					#len(str(12))-1 = 1	| len(str(2))-1 = 0
 		i = 0
 
-		print('lista numeros:{}, cantidad_elementos:{}, String:{}, num:{}, img:{}'.format(lista_numeros,cantidad_elementos,signo,num,img))
+		print('lista numeros:{}, cantidad_elementos:{}, String:{}, num:{}, img:{}'.format(lista_numeros,cantidad_elementos,simbolo,signo,num,img))
 
 		for n in sep:							#[1]->[2]	|	[2]
 			m = 1
@@ -37,67 +37,61 @@ def imprimirImagen(lista_numeros ,lista_imagen, cantidad_elementos, canvas, sign
 			img-=1
 			i+=1
 
-			ejeY=60
-			ejeX+=22
+			ejeY=60		#Posiciona a la misma altura la separacion de unidades, decenas, centenas
+			ejeX+=25
 			
-		ejeX+=20
+		ejeX+=10	#Separacion entre ultimo elemento de la suma y la linea de resultado
 		sep.clear()
 		
-	if signo == 'S':
-		canvas.create_text(ejeX/2, 20, fill="darkblue", font="Times 25 italic bold", text="+")
+	if simbolo == 'S':
+		canvas.create_text(ejeX/2, 20, fill="darkblue", font="Times 25 italic bold", text=signo)
 	
-def suma():
 
+def general(Operacion, Funcion, Signo):
 	SYMBOL_UP =    '▲ Procedimiento'
 	SYMBOL_DOWN =  '▼ Procedimiento'
 
 	datos = [
-			[sg.Text("Suma de numeros: ")],
-			[sg.Input(key='-INPUT1-')],					#cadena de caracteres como entrada de datos
+			[sg.Text(Operacion + " de numeros: ")],
+			[sg.Input(key='-INPUT1-')],		
 			[sg.T(key='Resultado')],
 			[sg.Button('Aceptar'), sg.Button('Salir')]
 		]
 	process = [[sg.Canvas(size=(450, 300), background_color='#afeeee', key='-canvas-')]]
-	layout = [	datos,	[sg.B(SYMBOL_DOWN,  key="-open_process-")], [collapse(process, '-Process-')]]
+	layout = [datos,[sg.B(SYMBOL_DOWN,  key="-open_process-")], [collapse(process, '-Process-')]]
 
-	window = sg.Window('Suma', layout, modal=True, finalize=True)
-
+	window = sg.Window(Operacion, layout, modal=True, finalize=True)
 	canvas = window['-canvas-']
 	canvass = canvas.TKCanvas
-
+	h, w = 25,25
 
 	unidad = Image.open("Unidades.png")
-	resize_unidad = unidad.resize((20, 20))
+	resize_unidad = unidad.resize((h,w))
 	img_unidad = ImageTk.PhotoImage(resize_unidad)
 
 	decena = Image.open("Decenas.png")
-	resize_decena = decena.resize((20, 20))
+	resize_decena = decena.resize((h,w))
 	img_decena = ImageTk.PhotoImage(resize_decena)
 
 	centena = Image.open("Centenas.png")
-	resize_centena = centena.resize((20, 20))
+	resize_centena = centena.resize((h,w))
 	img_centena = ImageTk.PhotoImage(resize_centena)
 
 	unidadesMillar = Image.open("UnidadesMillar.png")
-	resize_unidadesMillar = unidadesMillar.resize((20, 20))
+	resize_unidadesMillar = unidadesMillar.resize((h,w))
 	img_millar = ImageTk.PhotoImage(resize_unidadesMillar)
 
 	decenasMillar = Image.open("DecenasMillar.png")
-	resize_decenasMillar = decenasMillar.resize((20, 20))
+	resize_decenasMillar = decenasMillar.resize((h,w))
 	img_decena_millar = ImageTk.PhotoImage(resize_decenasMillar)	
 
 	centenasMillar = Image.open("CentenasMillar.png")
-	resize_centenasMillar = centenasMillar.resize((20, 20))
+	resize_centenasMillar = centenasMillar.resize((h,w))
 	img_centena_millar = ImageTk.PhotoImage(resize_centenasMillar)		
 
 	millon = Image.open("UnidadMillon.png")
-	resize_millon = millon.resize((20, 20))
+	resize_millon = millon.resize((h,w))
 	img_millon = ImageTk.PhotoImage(resize_millon)
-
-	guia = Image.open("Resume.png")
-	resize_resume = guia.resize((250,100))
-	img_resume = ImageTk.PhotoImage(resize_resume)
-
 
 	imagenes = [img_unidad, img_decena, img_centena, img_millar, img_decena_millar,
 				img_centena_millar, img_millon]
@@ -110,30 +104,28 @@ def suma():
 		if event == 'Aceptar':
 			canvass.delete('all')
 			if values['-INPUT1-']:
-				sep = values['-INPUT1-'].split('+')					#separa la cadena de caracteres en lista de str
+				sep = values['-INPUT1-'].split(Signo)	
 				cantidad_elementos = len(sep)
-				clean = [num.strip(' ') for num in sep]				#quita posibles espacios ingresados
-				check = [int(s) for s in clean if s.isdigit()]		#convierte numeros str en int
+				clean = [num.strip(' ') for num in sep]
+				check = [int(s) for s in clean if s.isdigit()]
 				print('Lista: ',check,'\n')
-				sumatoria = sum(check)
-				window['Resultado'].update("La suma es {0}".format(sumatoria))
 
-				#inicio de la impresion de imagenes
-				#NOTA: pruebas.py tiene codigo para la linea de resultado
-				imprimirImagen(check, imagenes, cantidad_elementos, canvass, 'S')
-				aux = []					#lista vacia para convertir el resultado
-				aux.append(sumatoria)
+				Resultado = Funcion(check)
+
+				window['Resultado'].update("La {0} es {1}".format(Operacion, Resultado))
+
+				imprimirImagen(check, imagenes, cantidad_elementos, canvass, Signo, 'S')
+				aux = []				
+				aux.append(Resultado)
 				global ejeX
 
-				#create_line(ejeX,inicio_de_linea_ejeY, longitud_de_linea, final_de_linea_ejeY)
-				# canvass.create_line(0, ejeY-10, 400, ejeY-10, fill="black", width="5")
 				canvass.create_line(ejeX-10, 50 , ejeX-10 , 200, fill="black", width="5")
 				ejeX += 12
 
 				imprimirImagen(aux, imagenes, 0, canvass)
 				ejeX = 20
 			else:
-				window['Resultado'].update("Debes de escribir al menos dos numeros para sumar!")							
+				window['Resultado'].update("Debes de escribir al menos un numero")							
 
 		if event.startswith('-open_process-'):
 			opened1 = not opened1
@@ -142,16 +134,18 @@ def suma():
 	window.close()
 
 
+def suma(list):
+	return sum(list)
 
+def multiplicacion(list):
+	return 0 if len(list)==0 else list[0] if len(list)==1 else list[0]*multiplicacion(list[1:])
 
-
-
-
-
-
-
-
-
+def dividir(list):
+	# 0 2	= 0
+	# 0 0	= Resultado indefinido	
+	# 2 0 	= Error, no se puede dividir entre 0
+	# 2 2	= 1
+	pass
 
 
 
@@ -175,31 +169,6 @@ def areaRectangulo():
 		# print("Area es igual a: {}".format(area))
 	window.close()
 
-
-def multiplicacion():
-	layout = [
-				[sg.T("Multiplicacion de numeros: ")],[sg.Input(key="Numeros")],
-				[sg.B('Aceptar'), sg.B('Salir')]
-			]
-	window = sg.Window("Multiplicacion", layout, modal=True)
-	while True:
-		event, values = window.read()
-		if event == sg.WINDOW_CLOSED or event == 'Salir':
-			break
-		Sep = values['Numeros'].split('*')
-		clean = [num.strip(' ') for num in Sep]
-		Total = [int(i) for i in clean]
-		Fin = 1
-		for x in Total:
-			Fin *= x
-		print(Fin)
-	window.close()
-
-# def mul(n):
-# 	total = 1
-# 	for i in range(0, len(n)):
-# 		total *= n[i]
-# 	print total
 
 def ComparacionNumero():
 	layout = [
@@ -226,31 +195,6 @@ def ComparacionNumero():
 			window['resultado'].update('Los números son iguales')
 	window.close()
 
-def Division():
-	layout = [
-		[sg.Text('Teclee el dividendo')],
-		[sg.Input(key='-Input2-')],
-		[sg.Text('Teclee el divisor')],
-		[sg.Input(key='-Input1-')],
-		[sg.Text(key='resultado')],
-		[sg.Button('aceptar'), sg.Button('Salir')],
-	]
-
-	window = sg.Window('División', layout, modal = True)
-	while True:
-		event, values = window.read()
-		if event == sg.WINDOW_CLOSED or event == 'Salir':
-			break
-		a=float(values['-Input1-'])
-		b=float(values['-Input2-'])
-		if (a <= 0) or (b <= 0):
-			window['resultado'].update('Error: los números deben ser positivos')
-		else:
-			window['resultado'].update('El resultado es {}'.format(dividir(a,b)))
-	window.close()
-
-def dividir(divisor, dividendo):
-	return (dividendo/divisor)
 
 def PorcentajeReglaTres():
 	layout = [

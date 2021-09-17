@@ -39,11 +39,11 @@ def submenu(evento):
 
 
 def opciones(evento):
-	if evento == '_suma_': suma()
+	if evento == '_suma_': general('Suma', suma, '+')
 	elif evento == '_areaRect_': areaRectangulo()
-	elif evento == '_multiplicacion_': multiplicacion()
+	elif evento == '_multiplicacion_': general('Multiplicacion', multiplicacion, '*')
 	elif evento == '_comparacion_': ComparacionNumero()
-	elif evento == '_division_': Division()
+	elif evento == '_division_': general('Division', dividir, '/')
 	elif evento == '_porcentaje_': PorcentajeReglaTres()
 	elif evento == '_pitagoras_': HipotenusaPitagoras()
 	# elif evento == '_areaTrap_':
