@@ -15,6 +15,7 @@ def collapse(layout, key):
 def imprimirImagen(lista_numeros ,lista_imagen, cantidad_elementos, canvas, signo=None, simbolo='N'):
 												#lista_numeros[12] 	|	lista_numeros[2,2]
 												#cantidad_elem[1]	|	cantidad_elem[2]
+	bandera = 1
 	for num in lista_numeros:
 		aux = list(str(num))					#['1','2']			|	['2']
 		sep = [int(x) for x in aux]				#[1,2]				|	[2]
@@ -25,27 +26,31 @@ def imprimirImagen(lista_numeros ,lista_imagen, cantidad_elementos, canvas, sign
 
 		img = len(str(num))-1					#len(str(12))-1 = 1	| len(str(2))-1 = 0
 		i = 0
-
-		print('lista numeros:{}, cantidad_elementos:{}, String:{}, num:{}, img:{}'.format(lista_numeros,cantidad_elementos,simbolo,signo,num,img))
+		print('lista numeros:{}, cantidad_elementos:{}, Simbolo:{}, Signo:{}, num:{}, img:{}'.format(lista_numeros, cantidad_elementos, simbolo, signo, num, img))
 
 		for n in sep:							#[1]->[2]	|	[2]
-			m = 1
-			while m <= sep[i]: 
-				canvas.create_image((ejeX),(ejeY),image=lista_imagen[img],anchor='center')
-				ejeY+=20
-				m+=1
+			m = 0
+			print('sep: ',sep)
+			if sep[i] != 0:
+				while m < sep[i]:
+					canvas.create_image((ejeX),(ejeY),image=lista_imagen[img],anchor='center')
+					ejeY+=20		#controla el espaciado entre elementos iguales
+					m+=1
+			else:
+				ejeX-=25			#si hay ceros, ignora el espacio del tipo de elemento correspondiente
 			img-=1
 			i+=1
-
 			ejeY=60		#Posiciona a la misma altura la separacion de unidades, decenas, centenas
-			ejeX+=25
-			
-		ejeX+=10	#Separacion entre ultimo elemento de la suma y la linea de resultado
+			ejeX+=25	#separa los tipos de elementos que hay en cada numero ingresado
+		if simbolo == 'S' and bandera < len(lista_numeros):
+			ejeX+=10		#espacia el signo
+			bandera+=1
+			canvas.create_text(ejeX, ejeY+25, fill="darkblue", font="Times 25 italic bold", text=signo)
+		ejeX+=30	#Separacion entre ultimo elemento de la suma y la linea de resultado o siguiente grupo
 		sep.clear()
 		
-	if simbolo == 'S':
-		canvas.create_text(ejeX/2, 20, fill="darkblue", font="Times 25 italic bold", text=signo)
 	
+
 
 def general(Operacion, Funcion, Signo):
 	SYMBOL_UP =    '▲ Procedimiento'
